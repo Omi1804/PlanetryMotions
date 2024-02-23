@@ -14,3 +14,91 @@
   align-items: center;
   justify-content: center;
 }
+
+/* no circle */
+.flickity-button {
+  background: transparent;
+}
+/* big previous & next buttons */
+.flickity-prev-next-button {
+  width: 2rem;
+  height: 2rem;
+}
+/* icon color */
+.flickity-button-icon {
+  fill: white;
+}
+/* hide disabled button */
+.flickity-button:disabled {
+  display: none;
+}
+
+.flickity-page-dots {
+  display: none;
+}
+
+.sideMenu {
+  z-index: 1;
+  left: -15rem; /* Start off-screen */
+  width: 15rem;
+  height: 100vh; /* Use vh for full viewport height */
+  border-right: 3px solid #4f72d4; /* Adjusted for a more space-like color */
+  background-color: #0a0e17; /* Dark background for a space theme */
+  position: fixed; /* Changed to fixed for consistent positioning */
+  color: white;
+  font-size: 0.9rem;
+  transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Elastic effect */
+
+  > ul {
+    width: 100%;
+    height: 100%;
+    padding: 1rem 2rem;
+
+    > li {
+      font-size: 1.3rem;
+      margin-block: 1.5rem;
+      font-family: "Space Mono", monospace;
+      cursor: pointer;
+    }
+  }
+}
+
+/* State class for when the menu is open */
+.sideMenu.open {
+  transform: translateX(15rem); /* Move into view */
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #162447; /* Slightly different header bg for depth */
+  color: #c7d2fe; /* Lighter text for better readability */
+
+  > span {
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+}
+
+.header > p {
+  font-family: "Space Mono", monospace;
+  margin: 0; /* Adjust spacing as needed */
+}
+
+.slideMenuIcon {
+  position: absolute;
+  z-index: 2; /* Ensure it's above other content */
+  left: 1rem; /* Closer to the edge */
+  top: 1rem; /* Adjust based on header height */
+  color: white;
+  cursor: pointer;
+}
+.slideMenuIcon.open {
+  display: none;
+}
+
+.material-symbols-outlined {
+  font-size: 2rem; /* Larger icons */
+}

@@ -1,39 +1,19 @@
-import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Background from "./Background/Background";
-import Carousel from "./Carousal/Carousal";
 
-import Planet from "./Planets/Planet";
+import Planets from "./Planets/Planets";
+import PlanetDetails from "./PlanetDetails/PlanetDetails";
 
 const App = () => {
-  const [planetDetails, setPlanetDetails] = useState([]);
-
-  useEffect(() => {
-    const fetchPlanetaryDetails = async () => {
-      try {
-        const response = await fetch(
-          "https://swapi.dev/api/planets/?format=json"
-        );
-        if (!response.ok) throw new Error("Network response was not ok");
-        const data = await response.json();
-        setPlanetDetails(data.results);
-      } catch (error) {
-        console.error("Fetch error:", error);
-      }
-    };
-
-    fetchPlanetaryDetails();
-  }, []);
-
-  console.log(planetDetails);
-
   return (
-    <div>
+    <BrowserRouter>
       <Background />
-      <div className="planets">
-        <Carousel planetDetails={planetDetails} />
-      </div>
-    </div>
+      <Routes>
+        <Route path="/" element={<Planets />} />
+        <Route path="/:planet" element={<PlanetDetails />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 export default App;
