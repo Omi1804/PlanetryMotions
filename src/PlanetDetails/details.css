@@ -1,0 +1,107 @@
+.planetDetails {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+
+  .backbtn {
+    position: absolute;
+    color: white;
+    top: 2rem;
+    left: 2rem;
+    z-index: 1;
+    cursor: pointer;
+    > span {
+      font-size: 1.5rem;
+    }
+  }
+
+  .personalDetails {
+    width: 70%;
+    margin: 3rem auto;
+    color: white;
+
+    border-radius: 10px;
+
+    .heading {
+      font-family: "Space Mono", monospace;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      text-align: center;
+      background-color: #162447;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+    }
+
+    .details {
+      padding: 1rem 2rem;
+      border-bottom: 3px solid #4f72d4;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      border-right: 3px solid #4f72d4;
+      border-left: 3px solid #4f72d4;
+      background-color: #0a0e17;
+      font-family: "Montserrat", sans-serif;
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
+
+      > div {
+        margin-block: 1rem;
+        font-size: 1.3rem;
+        font-weight: 500;
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+
+        > span {
+          font-weight: 300;
+          color: #f0e68c;
+          text-transform: capitalize;
+          text-align: left;
+        }
+      }
+    }
+  }
+
+  .residents {
+    width: 70%;
+    margin: 3rem auto;
+    color: white;
+    border-radius: 10px;
+
+    .heading {
+      font-family: "Space Mono", monospace;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      text-align: center;
+      background-color: #162447;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+    }
+    .residentContainer {
+      width: 100%;
+      max-height: 50vh;
+      overflow-y: scroll;
+      padding: 1rem 2rem;
+      border-bottom: 3px solid #4f72d4;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      border-right: 3px solid #4f72d4;
+      border-left: 3px solid #4f72d4;
+      background-color: #0a0e17;
+
+      .residentInfo,
+      .loading,
+      .noresident {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        font-family: "Space Mono", monospace;
+        margin-block: 1.3rem;
+        column-gap: 1rem;
+
+        > h3 {
+          color: #f0e68c;
+        }
+      }
+    }
+  }
+}

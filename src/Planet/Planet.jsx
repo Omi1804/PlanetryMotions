@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./planet.css";
 
 const generatePlanetStyle = (planet) => {
@@ -55,6 +56,7 @@ const generatePlanetStyle = (planet) => {
 };
 
 const Planet = ({ planet }) => {
+  const navigate = useNavigate();
   const planetStyle = generatePlanetStyle(planet);
   const hasRings = Math.random() < 0.4;
 
@@ -88,7 +90,7 @@ const Planet = ({ planet }) => {
     <div className="planetSec">
       {hasRings && <style>{ringStyle}</style>}
 
-      <div className="planetDetails">
+      <div className="planetDetailsSec">
         <div className="climate">
           Climate - <span>{planet.climate.split(",")[0]}</span>
         </div>
@@ -101,9 +103,16 @@ const Planet = ({ planet }) => {
       </div>
       <div className={`planet ${planetClassName}`} style={planetStyle}></div>
       <div className="planetName">{planet.name}</div>
-      <div className="noteSec">
+      <div
+        className="noteSec"
+        onClick={() => {
+          navigate(`/${planet.name}`, {
+            state: { planet },
+          });
+        }}
+      >
         More Details
-        <span class="material-symbols-outlined">arrow_right_alt</span>
+        <span className="material-symbols-outlined">arrow_right_alt</span>
       </div>
     </div>
   );

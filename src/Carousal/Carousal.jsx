@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import Flickity from "flickity";
+import { useNavigate } from "react-router-dom";
 import "flickity/css/flickity.css"; // Make sure to import Flickity CSS
 import "./carousal.css";
 import Planet from "../Planet/Planet";
 
 const Carousel = ({ planetDetails }) => {
   const carouselRef = useRef();
+  const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
@@ -24,8 +26,10 @@ const Carousel = ({ planetDetails }) => {
     setIsSidebarOpen(!isSidebarOpen);
   }
 
-  const redirectToPlanet = (planetName) => {
-    // Implementation for redirecting to a planet's page
+  const redirectToPlanet = (planet, residents) => {
+    navigate(`/${planet.name}`, {
+      state: { planet },
+    });
   };
 
   return (
@@ -49,7 +53,10 @@ const Carousel = ({ planetDetails }) => {
         </div>
         <ul>
           {planetDetails.map((planet, index) => (
-            <li key={index} onClick={() => redirectToPlanet(planet.name)}>
+            <li
+              key={index}
+              onClick={() => redirectToPlanet(planet, planet.residents)}
+            >
               {planet.name}
             </li>
           ))}
@@ -57,7 +64,7 @@ const Carousel = ({ planetDetails }) => {
       </div>
       <div ref={carouselRef} className="carousel">
         {planetDetails.map((planet, index) => (
-          <div className="carousel-cell">
+          <div className="carousel-cell" key={index}>
             <div key={index} className="planet-cell">
               <Planet planet={planet} />
             </div>

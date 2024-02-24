@@ -1,0 +1,69 @@
+.homeSec {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.note {
+  max-width: 90%;
+  border: 3px solid #4f72d4;
+  padding-inline: 2rem;
+  font-family: "Space Mono", monospace;
+  border-radius: 10px;
+  height: 20%;
+  background-color: #0a0e179e;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.typingEffect {
+  white-space: nowrap;
+  font-size: 0.9svw;
+  overflow: hidden;
+  border-right: 0.15em solid orange;
+  animation: typing 8s steps(90, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: orange;
+  }
+}
+
+button {
+  position: absolute;
+  bottom: 10rem;
+  font-family: "Space Mono", monospace;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 10px 20px;
+  color: #0a0e17;
+  background-color: #f0e68c;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #d4af37;
+}

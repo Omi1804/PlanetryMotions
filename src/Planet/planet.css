@@ -69,14 +69,14 @@
   }
 }
 
-.planetDetails {
+.planetDetailsSec {
   position: absolute;
   right: 6rem;
   font-family: "Space Mono", monospace;
   height: 50%;
 }
 
-.planetDetails > div {
+.planetDetailsSec > div {
   font-size: 1.2rem;
   color: #f0e68c;
   font-weight: 400;
@@ -90,15 +90,15 @@
   animation: typingEffect 4s steps(40, end) forwards; /* Adjust time as needed */
 }
 
-.planetDetails > div:not(:first-child) {
+.planetDetailsSec > div:not(:first-child) {
   animation-delay: 2s; /* Delay subsequent details to simulate sequential typing */
 }
 
-.planetDetails > div:not(:nth-child(2)) {
+.planetDetailsSec > div:not(:nth-child(2)) {
   animation-delay: 4s; /* Further delay for the second detail */
 }
 
-.planetDetails > div > span {
+.planetDetailsSec > div > span {
   font-size: 1.1rem;
   color: #e5dcc1;
 }
@@ -126,6 +126,7 @@
   align-items: center;
   justify-content: center;
   color: #ebb30b;
+  z-index: 1;
   > span {
     font-size: 2rem;
     margin-inline: 0.3rem;
