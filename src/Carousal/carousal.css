@@ -90,8 +90,8 @@
 .slideMenuIcon {
   position: absolute;
   z-index: 2; /* Ensure it's above other content */
-  left: 1rem; /* Closer to the edge */
-  top: 1rem; /* Adjust based on header height */
+  left: 3rem; /* Closer to the edge */
+  top: 1.5rem; /* Adjust based on header height */
   color: white;
   cursor: pointer;
 }

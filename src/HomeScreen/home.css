@@ -24,7 +24,7 @@
 
 .typingEffect {
   white-space: nowrap;
-  font-size: 0.9svw;
+  font-size: 1svw;
   overflow: hidden;
   border-right: 0.15em solid orange;
   animation: typing 8s steps(90, end), blink-caret 0.75s step-end infinite;

@@ -30,8 +30,8 @@ const generatePlanetStyle = (planet) => {
                       inset 0 0 ${25 + Math.random() * 25}px ${ringColor}`;
 
   return {
-    width: `${size}rem`,
-    height: `${size}rem`,
+    width: `${size}svw`,
+    height: `${size}svw`,
     background,
     boxShadow,
     position: "relative",
@@ -42,13 +42,13 @@ const generatePlanetStyle = (planet) => {
           content: '""',
           display: "block",
           position: "absolute",
-          width: `${ringSize}rem`,
-          height: `${ringSize / 10}rem`,
+          width: `${ringSize}svw`,
+          height: `${ringSize / 10}svw`,
           borderRadius: "50%",
           background: ringColor,
           boxShadow: ringShadow,
-          top: `calc(50% - ${ringSize / 20}rem)`,
-          left: `calc(50% - ${ringSize / 2}rem)`,
+          top: `calc(50% - ${ringSize / 20}svw)`,
+          left: `calc(50% - ${ringSize / 2}svw)`,
           zIndex: "-1",
         }
       : {},
@@ -102,7 +102,16 @@ const Planet = ({ planet }) => {
         </div>
       </div>
       <div className={`planet ${planetClassName}`} style={planetStyle}></div>
-      <div className="planetName">{planet.name}</div>
+      <div
+        className="planetName"
+        onClick={() => {
+          navigate(`/${planet.name}`, {
+            state: { planet },
+          });
+        }}
+      >
+        {planet.name}
+      </div>
       <div
         className="noteSec"
         onClick={() => {
