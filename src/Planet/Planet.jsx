@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./planet.css";
 
@@ -14,8 +13,8 @@ const generatePlanetStyle = (planet) => {
   ];
   const shadowColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 
-  const background = `radial-gradient(circle at 20% 20%, ${colors[0]}, transparent 100%), 
-                      radial-gradient(circle at 55% 45%, ${colors[1]}, transparent 60%), 
+  const background = `radial-gradient(circle at 20% 20%, ${colors[0]}, transparent 100%),
+                      radial-gradient(circle at 55% 45%, ${colors[1]}, transparent 60%),
                       radial-gradient(circle at 75% 10%, ${colors[2]}, transparent 50%)`;
 
   const boxShadow = `0 0 ${10 + Math.random() * 10}px ${shadowColor},
@@ -26,7 +25,7 @@ const generatePlanetStyle = (planet) => {
   // Ring styles if the planet has rings
   const ringSize = size * 1.5;
   const ringColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-  const ringShadow = `0 0 ${15 + Math.random() * 15}px ${ringColor}, 
+  const ringShadow = `0 0 ${15 + Math.random() * 15}px ${ringColor},
                       inset 0 0 ${25 + Math.random() * 25}px ${ringColor}`;
 
   return {

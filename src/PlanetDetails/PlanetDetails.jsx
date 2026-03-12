@@ -6,7 +6,6 @@ import "./details.css";
 
 const PlanetDetails = () => {
   const navigate = useNavigate();
-  const params = useParams();
   const location = useLocation();
   const [planet, setPlanet] = useState(location.state.planet);
 
