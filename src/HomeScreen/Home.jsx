@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 const NUM_STARS = 180;
 const NUM_PARTICLES = 28;
@@ -35,6 +36,7 @@ export default function Home() {
   const [showCaret, setShowCaret] = useState(true);
   const [showButton, setShowButton] = useState(false);
   const [buttonVisible, setButtonVisible] = useState(false);
+  const navigate = useNavigate();
   const indexRef = useRef(0);
 
   // Typing effect
@@ -60,8 +62,8 @@ export default function Home() {
     return () => clearInterval(t);
   }, []);
 
-  const navigate = () => {
-    window.location.href = "/planets";
+  const navigation = () => {
+    navigate("/planets");
   };
 
   return (
@@ -145,7 +147,7 @@ export default function Home() {
               opacity: buttonVisible ? 1 : 0,
               transform: buttonVisible ? "translateY(0)" : "translateY(12px)",
             }}
-            onClick={navigate}
+            onClick={navigation}
             onMouseEnter={(e) => {
               e.currentTarget.style.background =
                 "linear-gradient(135deg,#d4af37,#f0e68c)";
