@@ -26,7 +26,7 @@ const Carousel = ({ planetDetails }) => {
     setIsSidebarOpen(!isSidebarOpen);
   }
 
-  const redirectToPlanet = (planet, residents) => {
+  const redirectToPlanet = (planet) => {
     navigate(`/${planet.name}`, {
       state: { planet },
     });
@@ -55,7 +55,7 @@ const Carousel = ({ planetDetails }) => {
           {planetDetails.map((planet, index) => (
             <li
               key={index}
-              onClick={() => redirectToPlanet(planet, planet.residents)}
+              onClick={() => redirectToPlanet(planet)}
             >
               {planet.name}
             </li>

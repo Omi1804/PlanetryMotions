@@ -1,15 +1,31 @@
-import React, { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import ResidentInfo from "../ResidentInfo/ResidentInfo";
+import { planets } from "../data/planets";
 import "./details.css";
-// import ResidentInfo from "../ResidentInfo/ResidentInfo";
 
 const PlanetDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [planet, setPlanet] = useState(location.state.planet);
+  const { planet: planetName } = useParams();
+  const planet =
+    location.state?.planet ||
+    planets.find(({ name }) => name.toLowerCase() === planetName.toLowerCase());
 
-  useEffect(() => {});
+  if (!planet) {
+    return (
+      <div className="planetDetails">
+        <div
+          className="backbtn"
+          onClick={() => {
+            navigate("/planets");
+          }}
+        >
+          <span className="material-symbols-outlined">arrow_back</span>
+        </div>
+        <div className="noresident">Planet not found.</div>
+      </div>
+    );
+  }
 
   return (
     <div className="planetDetails">
@@ -19,7 +35,7 @@ const PlanetDetails = () => {
           navigate("/planets");
         }}
       >
-        <span class="material-symbols-outlined">arrow_back</span>
+        <span className="material-symbols-outlined">arrow_back</span>
       </div>
       <div className="personalDetails">
         <div className="heading">Planet Details</div>
@@ -42,8 +58,8 @@ const PlanetDetails = () => {
         <div className="heading">Residents Information</div>
         <div className="residentContainer">
           {planet.residents.length > 0 ? (
-            planet.residents.map((residentUrl, index) => (
-              <ResidentInfo key={index} url={residentUrl} />
+            planet.residents.map((resident, index) => (
+              <ResidentInfo key={`${resident.name}-${index}`} resident={resident} />
             ))
           ) : (
             <div className="noresident">No known residents.</div>
