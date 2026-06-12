@@ -1,152 +1,408 @@
 .planetSec {
+  position: relative;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-.planet {
-  position: relative;
-  border-radius: 50%;
-  animation: spin 60s linear infinite;
+  overflow: hidden;
+  isolation: isolate;
 }
 
-.planet::after {
+.planetSec::before {
   content: "";
   position: absolute;
-  top: -10px;
-  left: -10px;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 0, 64, 0.4), transparent 70%);
-  z-index: -1;
+  inset: 8% 15%;
+  z-index: -2;
+  opacity: 0.45;
+  background:
+    radial-gradient(circle at 22% 34%, rgba(255, 255, 255, 0.85) 0 1px, transparent 2px),
+    radial-gradient(circle at 72% 18%, rgba(255, 255, 255, 0.65) 0 1px, transparent 2px),
+    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.5) 0 1px, transparent 2px),
+    radial-gradient(circle at 38% 78%, rgba(255, 255, 255, 0.7) 0 1px, transparent 2px);
+  background-size: 17rem 17rem, 23rem 23rem, 29rem 29rem, 31rem 31rem;
+  filter: drop-shadow(0 0 8px rgba(166, 206, 255, 0.35));
+  animation: starDrift 38s linear infinite;
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.planetSystem {
+  position: relative;
+  width: min(72svw, 62svh, calc(var(--planet-size) * 1.9));
+  height: min(72svw, 62svh, calc(var(--planet-size) * 1.9));
+  display: grid;
+  place-items: center;
+  transform: rotate(var(--planet-tilt));
+  transform-style: preserve-3d;
+}
+
+.orbitGuide {
+  position: absolute;
+  width: 126%;
+  height: 35%;
+  border: 1px solid rgba(189, 219, 255, 0.12);
+  border-radius: 50%;
+  transform: rotate(-12deg);
+  filter: blur(0.2px);
+}
+
+.orbitGuide-two {
+  width: 152%;
+  height: 43%;
+  transform: rotate(17deg);
+  opacity: 0.5;
+}
+
+.planetBody {
+  position: relative;
+  width: min(62svw, 50svh, var(--planet-size));
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 30% 22%, rgba(255, 255, 255, 0.95) 0 3%, rgba(255, 255, 255, 0.25) 12%, transparent 27%),
+    radial-gradient(circle at 68% 64%, var(--planet-accent) 0 8%, transparent 31%),
+    radial-gradient(circle at 34% 68%, var(--planet-light) 0 7%, transparent 29%),
+    linear-gradient(130deg, var(--planet-light) 0%, var(--planet-mid) 43%, var(--planet-deep) 100%);
+  box-shadow:
+    -1.5rem 1.4rem 4rem rgba(0, 0, 0, 0.62) inset,
+    1.2rem -1rem 2.8rem rgba(255, 255, 255, 0.16) inset,
+    0 0 1.5rem color-mix(in srgb, var(--planet-accent), transparent 42%),
+    0 0 5.5rem color-mix(in srgb, var(--planet-mid), transparent 50%);
+  animation: planetFloat 8s ease-in-out infinite alternate;
+}
+
+.planetTexture,
+.planetBands,
+.planetClouds,
+.planetAurora,
+.planetShade,
+.planetAtmosphere {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.planetTexture {
+  width: 180%;
+  left: -40%;
+  opacity: 0.82;
+  mix-blend-mode: soft-light;
+  background:
+    radial-gradient(ellipse at 24% 28%, rgba(255, 255, 255, 0.5) 0 5%, transparent 22%),
+    radial-gradient(ellipse at 63% 18%, rgba(0, 0, 0, 0.32) 0 4%, transparent 18%),
+    radial-gradient(ellipse at 45% 62%, rgba(255, 255, 255, 0.34) 0 7%, transparent 24%),
+    radial-gradient(ellipse at 77% 72%, rgba(0, 0, 0, 0.28) 0 6%, transparent 21%),
+    repeating-linear-gradient(
+      var(--planet-band-angle),
+      rgba(255, 255, 255, 0.24) 0 0.45rem,
+      transparent 0.45rem 1.35rem,
+      rgba(0, 0, 0, 0.18) 1.35rem 1.7rem,
+      transparent 1.7rem 2.7rem
+    );
+  background-size: var(--planet-terrain-scale) var(--planet-terrain-scale), 52% 52%, 71% 71%, 64% 64%, auto;
+  animation: surfaceRotate var(--planet-rotate-duration) linear infinite;
+}
+
+.planetBands {
+  opacity: 0.42;
+  mix-blend-mode: overlay;
+  background:
+    repeating-linear-gradient(
+      178deg,
+      transparent 0 8%,
+      rgba(255, 255, 255, 0.34) 8% 11%,
+      transparent 11% 19%,
+      rgba(0, 0, 0, 0.22) 19% 22%
+    );
+  transform: rotate(-8deg) scale(1.12);
+}
+
+.planetClouds {
+  inset: -6%;
+  opacity: 0.44;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(ellipse at 18% 30%, rgba(255, 255, 255, 0.72) 0 8%, transparent 26%),
+    radial-gradient(ellipse at 62% 40%, rgba(255, 255, 255, 0.54) 0 9%, transparent 30%),
+    radial-gradient(ellipse at 48% 74%, rgba(255, 255, 255, 0.48) 0 7%, transparent 24%),
+    repeating-linear-gradient(102deg, transparent 0 1.4rem, rgba(255, 255, 255, 0.14) 1.4rem 2rem, transparent 2rem 3.3rem);
+  filter: blur(0.7px);
+  animation: cloudSweep var(--planet-cloud-duration) linear infinite;
+}
+
+.planetAurora {
+  inset: 4%;
+  opacity: 0.5;
+  mix-blend-mode: screen;
+  background:
+    conic-gradient(from 115deg at 50% 50%, transparent 0 15%, rgba(128, 255, 219, 0.42) 20%, transparent 31%, rgba(199, 125, 255, 0.32) 42%, transparent 56%),
+    radial-gradient(ellipse at 50% 17%, rgba(255, 255, 255, 0.4), transparent 30%);
+  filter: blur(3px);
+  animation: auroraPulse 5s ease-in-out infinite alternate;
+}
+
+.planetShade {
+  background:
+    radial-gradient(circle at 25% 20%, transparent 0 28%, rgba(0, 0, 0, 0.2) 51%, rgba(0, 0, 0, 0.72) 100%),
+    linear-gradient(105deg, transparent 0 43%, rgba(0, 0, 0, 0.2) 63%, rgba(0, 0, 0, 0.75) 100%);
+}
+
+.planetAtmosphere {
+  inset: -1.8%;
+  border: 1px solid color-mix(in srgb, var(--planet-ice), transparent 15%);
+  box-shadow:
+    0 0 1.2rem color-mix(in srgb, var(--planet-ice), transparent 18%),
+    0 0 3rem color-mix(in srgb, var(--planet-accent), transparent 52%),
+    0 0 6rem color-mix(in srgb, var(--planet-mid), transparent 68%);
+  opacity: 0.82;
+}
+
+.planetRing {
+  position: absolute;
+  width: min(92svw, 64svh, calc(var(--planet-size) * 1.85));
+  height: min(20svw, 14svh, calc(var(--planet-size) * 0.34));
+  border-radius: 50%;
+  border: 0.32rem solid color-mix(in srgb, var(--ring-color), transparent 22%);
+  box-shadow:
+    0 0 0 0.22rem color-mix(in srgb, var(--ring-shadow), transparent 42%),
+    0 0 1.6rem color-mix(in srgb, var(--ring-color), transparent 20%),
+    inset 0 0 1.3rem color-mix(in srgb, var(--ring-shadow), transparent 20%);
+  transform: rotateX(74deg) rotateZ(-13deg);
+}
+
+.planetRing::before,
+.planetRing::after {
+  content: "";
+  position: absolute;
+  inset: 16% -3%;
+  border-radius: inherit;
+  border: 0.08rem solid rgba(255, 255, 255, 0.42);
+}
+
+.planetRing::after {
+  inset: 34% 9%;
+  opacity: 0.55;
+}
+
+.planetRing-back {
+  z-index: -1;
+  opacity: 0.62;
+  clip-path: inset(0 0 46% 0);
+}
+
+.planetRing-front {
+  z-index: 2;
+  opacity: 0.9;
+  clip-path: inset(46% 0 0 0);
 }
 
 .planetName {
   cursor: pointer;
   width: 100%;
-  margin-block-start: 3rem;
+  margin-block-start: 2.2rem;
   color: white;
   text-align: center;
-  font-size: 2.5rem; /* Slightly larger for emphasis */
-  letter-spacing: 2px; /* Increased spacing for readability */
-  font-weight: 600; /* Make the text a bit bolder */
+  font-size: clamp(2rem, 4svw, 4.8rem);
+  letter-spacing: 0;
+  font-weight: 700;
   font-family: "Montserrat", sans-serif;
-  background: -webkit-linear-gradient(
-    45deg,
-    #e5dcc1,
-    #f0e68c,
-    #c5c2b3,
-    #adaba4
-  );
+  background: linear-gradient(90deg, #f8fbff, #ffe8a3 38%, #9df9ff 72%, #ffffff);
+  background-size: 180% 100%;
   background-clip: text;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; /* Apply gradient to text */
-  animation: shine 5s linear infinite;
-  text-shadow: 0px 0px 8px rgba(199, 193, 157, 0.8); /* Soft glow effect */
-  transition: text-shadow 0.3s ease-in-out;
+  -webkit-text-fill-color: transparent;
+  animation: shine 7s linear infinite;
+  text-shadow: 0 0 18px rgba(159, 225, 255, 0.28);
+  transition: filter 0.3s ease, transform 0.3s ease;
 }
 
 .planetName:hover {
-  text-shadow: 0 0 10px #fff,
-    /* Outer white glow */ 0 0 20px rgba(255, 255, 224, 0.7),
-    /* Middle yellow glow */ 0 0 30px rgba(199, 193, 157, 0.8); /* Inner soft glow matching original shadow */
-}
-
-@keyframes shine {
-  0% {
-    background-position: top right;
-  }
-  50% {
-    background-position: bottom left;
-  }
-  100% {
-    background-position: top right;
-  }
+  filter: drop-shadow(0 0 16px rgba(255, 232, 163, 0.55));
+  transform: translateY(-0.15rem);
 }
 
 .planetDetailsSec {
   position: absolute;
-  right: 6rem;
+  right: clamp(4.5rem, 8svw, 10rem);
+  top: clamp(5.5rem, 10svh, 8rem);
+  z-index: 3;
+  display: grid;
+  gap: 0.7rem;
+  justify-items: end;
+  max-width: min(23rem, 28svw);
   font-family: "Space Mono", monospace;
-  height: 50%;
 }
 
 .planetDetailsSec > div {
-  font-size: 1.2rem;
-  color: #f0e68c;
-  font-weight: 400;
-  margin-bottom: 1rem;
-  margin-inline: 0.5rem;
-  white-space: nowrap;
-  overflow: hidden; /* Hide the overflow to make the typing effect */
-  border-right: 0.15em solid orange; /* Simulates the cursor */
-  width: 0; /* Start with 0 width and expand to reveal the text */
-  opacity: 0; /* Start invisible and become visible as it "types" */
-  animation: typingEffect 4s steps(40, end) forwards; /* Adjust time as needed */
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid rgba(174, 215, 255, 0.2);
+  border-radius: 0.5rem;
+  color: #dff5ff;
+  background: linear-gradient(105deg, rgba(7, 12, 27, 0.64), rgba(17, 29, 55, 0.28));
+  box-shadow: 0 0 1.4rem rgba(97, 178, 255, 0.08);
+  font-size: clamp(0.8rem, 1.1svw, 1.08rem);
+  line-height: 1.45;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateX(1rem);
+  animation: detailReveal 0.7s ease forwards;
 }
 
-.planetDetailsSec > div:not(:first-child) {
-  animation-delay: 2s; /* Delay subsequent details to simulate sequential typing */
+.planetDetailsSec > div:nth-child(2) {
+  animation-delay: 0.14s;
 }
 
-.planetDetailsSec > div:not(:nth-child(2)) {
-  animation-delay: 4s; /* Further delay for the second detail */
+.planetDetailsSec > div:nth-child(3) {
+  animation-delay: 0.28s;
+}
+
+.planetDetailsSec > div::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-left: 2px solid rgba(255, 232, 163, 0.68);
+  opacity: 0.75;
 }
 
 .planetDetailsSec > div > span {
-  font-size: 1.1rem;
-  color: #e5dcc1;
-}
-
-@keyframes typingEffect {
-  from {
-    width: 0;
-    opacity: 0;
-  }
-  to {
-    width: 100%;
-    opacity: 1;
-  }
+  color: #ffe8a3;
 }
 
 .noteSec {
   font-family: "Montserrat", sans-serif;
   position: absolute;
-  bottom: 2rem;
-  right: 2rem;
+  bottom: clamp(2rem, 5svh, 4rem);
+  right: clamp(4rem, 8svw, 9rem);
   cursor: pointer;
   display: flex;
-  font-size: 1.1rem;
-  font-weight: 500;
+  gap: 0.25rem;
+  font-size: 1.05rem;
+  font-weight: 600;
   align-items: center;
   justify-content: center;
-  color: #ebb30b;
-  z-index: 1;
-  > span {
-    font-size: 2rem;
-    margin-inline: 0.3rem;
+  color: #ffe8a3;
+  z-index: 3;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.noteSec:hover {
+  color: #9df9ff;
+  transform: translateX(0.25rem);
+}
+
+.noteSec > span {
+  font-size: 2rem;
+}
+
+@keyframes surfaceRotate {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-22%);
+  }
+}
+
+@keyframes cloudSweep {
+  from {
+    transform: translateX(-4%) rotate(0deg);
+  }
+  to {
+    transform: translateX(4%) rotate(360deg);
+  }
+}
+
+@keyframes auroraPulse {
+  from {
+    opacity: 0.3;
+    transform: scale(0.96) rotate(-3deg);
+  }
+  to {
+    opacity: 0.62;
+    transform: scale(1.04) rotate(3deg);
+  }
+}
+
+@keyframes planetFloat {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-0.8rem);
+  }
+}
+
+@keyframes starDrift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-2rem, 1rem, 0);
+  }
+}
+
+@keyframes shine {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 180% 50%;
+  }
+}
+
+@keyframes detailReveal {
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
 @media screen and (max-width: 768px) {
-  .planetDetailsSec {
-    text-align: center;
-    right: 20%;
-    top: 17%;
+  .planetSec {
+    min-height: 100svh;
+    padding-block: 5rem 4rem;
   }
+
+  .planetSystem {
+    width: min(94svw, calc(var(--planet-size) * 1.55));
+    height: min(94svw, calc(var(--planet-size) * 1.55));
+  }
+
+  .planetBody {
+    width: min(78svw, var(--planet-size));
+  }
+
+  .planetDetailsSec {
+    position: static;
+    order: -1;
+    max-width: min(22rem, 88svw);
+    margin-block-end: 1.5rem;
+    justify-items: stretch;
+    text-align: left;
+  }
+
+  .planetDetailsSec > div {
+    width: 100%;
+  }
+
   .planetName {
-    font-size: 5svw;
+    margin-block-start: 1.2rem;
+    font-size: clamp(2rem, 9svw, 3.4rem);
+  }
+
+  .noteSec {
+    right: 50%;
+    bottom: 1.1rem;
+    transform: translateX(50%);
+    white-space: nowrap;
+  }
+
+  .noteSec:hover {
+    transform: translateX(50%);
   }
 }

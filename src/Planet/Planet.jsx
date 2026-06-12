@@ -1,94 +1,87 @@
 import { useNavigate } from "react-router-dom";
 import "./planet.css";
 
-const generatePlanetStyle = (planet) => {
-  const seed = (planet.diameter / 100) % 100;
-  const hasRings = Math.random() < 0.4; // 40% chance of having rings
+const palettes = {
+  frozen: ["#d9fbff", "#73b6d8", "#24506f", "#f8ffff", "#a7f1ff"],
+  volcanic: ["#ffd166", "#e85d04", "#4a1307", "#fff3b0", "#ff9f1c"],
+  oceanic: ["#9bf6ff", "#2786a3", "#0b2848", "#e2fffb", "#4cc9f0"],
+  lush: ["#b7ef6e", "#2a9d5b", "#16351f", "#f7ffd6", "#71f79f"],
+  desert: ["#f6d186", "#c7782f", "#522c17", "#fff2c2", "#f4a261"],
+  storm: ["#c8d6e5", "#546a90", "#1b243b", "#f7fbff", "#b8c0ff"],
+  twilight: ["#d7b8ff", "#7158b5", "#180d31", "#fff0ff", "#c77dff"],
+  default: ["#d4f1f9", "#4b9aaa", "#152d46", "#ffffff", "#80ffdb"],
+};
 
-  const size = Math.floor(seed / 5 + 20);
-  const colors = [
-    `#${Math.floor(Math.random() * 16777215).toString(16)}`,
-    `#${Math.floor(Math.random() * 16777215).toString(16)}`,
-    `#${Math.floor(Math.random() * 16777215).toString(16)}`,
-  ];
-  const shadowColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+const hashString = (value) =>
+  value.split("").reduce((hash, char) => {
+    const nextHash = (hash << 5) - hash + char.charCodeAt(0);
+    return nextHash & nextHash;
+  }, 0);
 
-  const background = `radial-gradient(circle at 20% 20%, ${colors[0]}, transparent 100%),
-                      radial-gradient(circle at 55% 45%, ${colors[1]}, transparent 60%),
-                      radial-gradient(circle at 75% 10%, ${colors[2]}, transparent 50%)`;
+const seededRandom = (seed) => {
+  const value = Math.sin(seed) * 10000;
+  return value - Math.floor(value);
+};
 
-  const boxShadow = `0 0 ${10 + Math.random() * 10}px ${shadowColor},
-                     inset 0 0 ${20 + Math.random() * 20}px ${shadowColor},
-                     0 0 ${50 + Math.random() * 30}px ${shadowColor},
-                     inset 0 0 ${60 + Math.random() * 40}px ${shadowColor}`;
+const getPalette = (planet) => {
+  const descriptor = `${planet.climate} ${planet.terrain}`.toLowerCase();
 
-  // Ring styles if the planet has rings
-  const ringSize = size * 1.5;
-  const ringColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-  const ringShadow = `0 0 ${15 + Math.random() * 15}px ${ringColor},
-                      inset 0 0 ${25 + Math.random() * 25}px ${ringColor}`;
+  if (/frozen|glacial|ice|cold|snow/.test(descriptor)) return palettes.frozen;
+  if (/volcanic|lava|ash|scorching|flame/.test(descriptor)) return palettes.volcanic;
+  if (/ocean|marine|coast|coral|tidal|bay|water/.test(descriptor)) return palettes.oceanic;
+  if (/forest|jungle|lush|grass|orchard|fern/.test(descriptor)) return palettes.lush;
+  if (/arid|desert|dune|dry|barren|salt/.test(descriptor)) return palettes.desert;
+  if (/storm|wind|thunder|electric|charged/.test(descriptor)) return palettes.storm;
+  if (/twilight|dim|shadow|nocturnal|moon/.test(descriptor)) return palettes.twilight;
+
+  return palettes.default;
+};
+
+const generatePlanetProfile = (planet) => {
+  const seed = Math.abs(hashString(`${planet.name}-${planet.diameter}`));
+  const diameter = Number(planet.diameter) || 10000;
+  const size = Math.min(31, Math.max(17, 14 + diameter / 1150));
+  const hasRings = seededRandom(seed + 1) > 0.58;
+  const hasClouds = seededRandom(seed + 2) > 0.28;
+  const hasAurora = /frozen|storm|electric|cold|wind/i.test(
+    `${planet.climate} ${planet.terrain}`
+  );
+  const tilt = Math.round(seededRandom(seed + 3) * 38 - 19);
+  const [light, mid, deep, ice, accent] = getPalette(planet);
+  const rotateDuration = Math.round(70 + seededRandom(seed + 4) * 70);
+  const cloudDuration = Math.round(38 + seededRandom(seed + 5) * 42);
+  const bandAngle = Math.round(80 + seededRandom(seed + 6) * 40);
+  const terrainScale = Math.round(56 + seededRandom(seed + 7) * 34);
 
   return {
-    width: `${size}svw`,
-    height: `${size}svw`,
-    background,
-    boxShadow,
-    position: "relative",
-    borderRadius: "50%",
-    // Ring styles applied conditionally
-    ":before": hasRings
-      ? {
-          content: '""',
-          display: "block",
-          position: "absolute",
-          width: `${ringSize}svw`,
-          height: `${ringSize / 10}svw`,
-          borderRadius: "50%",
-          background: ringColor,
-          boxShadow: ringShadow,
-          top: `calc(50% - ${ringSize / 20}svw)`,
-          left: `calc(50% - ${ringSize / 2}svw)`,
-          zIndex: "-1",
-        }
-      : {},
+    hasAurora,
+    hasClouds,
+    hasRings,
+    className: hasRings ? "has-rings" : "",
+    style: {
+      "--planet-size": `${size}rem`,
+      "--planet-tilt": `${tilt}deg`,
+      "--planet-light": light,
+      "--planet-mid": mid,
+      "--planet-deep": deep,
+      "--planet-ice": ice,
+      "--planet-accent": accent,
+      "--planet-band-angle": `${bandAngle}deg`,
+      "--planet-terrain-scale": `${terrainScale}%`,
+      "--planet-rotate-duration": `${rotateDuration}s`,
+      "--planet-cloud-duration": `${cloudDuration}s`,
+      "--ring-color": accent,
+      "--ring-shadow": mid,
+    },
   };
 };
 
 const Planet = ({ planet }) => {
   const navigate = useNavigate();
-  const planetStyle = generatePlanetStyle(planet);
-  const hasRings = Math.random() < 0.4;
-
-  const ringThickness = ".1rem";
-
-  // Generate a unique className for potentially adding rings
-  const planetClassName = `planet-${planet.name
-    .replace(/\s+/g, "-")
-    .toLowerCase()}`;
-
-  // Dynamic style for rings using a style tag
-  const ringStyle = hasRings
-    ? `
-    .${planetClassName}::before {
-      content: "";
-      display: block;
-      position: relative;
-      width: ${planetStyle[":before"]?.width};
-      height: ${planetStyle[":before"]?.height};
-      border: ${ringThickness} solid ${planetStyle[":before"]?.background};
-      box-shadow: ${planetStyle[":before"]?.boxShadow};
-      border-radius: 50%;
-      top: ${planetStyle[":before"]?.top};
-      left: ${planetStyle[":before"]?.left};
-      z-index: -1;
-    }
-  `
-    : "";
+  const planetProfile = generatePlanetProfile(planet);
 
   return (
     <div className="planetSec">
-      {hasRings && <style>{ringStyle}</style>}
-
       <div className="planetDetailsSec">
         <div className="climate">
           Climate - <span>{planet.climate.split(",")[0]}</span>
@@ -100,7 +93,23 @@ const Planet = ({ planet }) => {
           Terrain - <span>{planet.terrain.split(",")[0]}</span>
         </div>
       </div>
-      <div className={`planet ${planetClassName}`} style={planetStyle}></div>
+      <div
+        className={`planetSystem ${planetProfile.className}`}
+        style={planetProfile.style}
+      >
+        <div className="orbitGuide orbitGuide-one" />
+        <div className="orbitGuide orbitGuide-two" />
+        {planetProfile.hasRings && <div className="planetRing planetRing-back" />}
+        <div className="planet planetBody">
+          <div className="planetTexture" />
+          <div className="planetBands" />
+          {planetProfile.hasClouds && <div className="planetClouds" />}
+          {planetProfile.hasAurora && <div className="planetAurora" />}
+          <div className="planetShade" />
+          <div className="planetAtmosphere" />
+        </div>
+        {planetProfile.hasRings && <div className="planetRing planetRing-front" />}
+      </div>
       <div
         className="planetName"
         onClick={() => {
